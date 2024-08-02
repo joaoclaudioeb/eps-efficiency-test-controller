@@ -10,15 +10,14 @@
  */
 
 #include <FreeRTOS.h>
+#include <cstdint>
 #include <task.h>
 #include <stdio.h>
 
+#include "drivers/uart/uart_module.h"
 #include "pico/stdlib.h"
+#include "pico/time.h"
 #include "tasks/tasks.h"
-
-#include "drivers/uart_module.cpp"
-
-Serial serial(DEFAULT_UART_CHANNEL, DEFAULT_PARITY, DEFAULT_BAUD_RATE, DEFAULT_DATA_BITS, DEFAULT_STOP_BITS, DEFAULT_TX_PIN, DEFAULT_RX_PIN);
 
 int main(void)
 {
@@ -27,10 +26,18 @@ int main(void)
     
     // Starts the scheduler
     // vTaskStartScheduler();
-    
-    serial.sendPackage("\nI'm alive!\n");
-    
-    while(1);
+    drivers::UartConfig uart_cfg {
+        .port = drivers::UartPort::UART_0,
+    };
+
+    drivers::UartController uart{uart_cfg};
+
+    while(1) {
+        uint8_t a[] = {0x65, 0x65};
+        uart.write(a, 2);
+
+        sleep_ms(500U);
+    }
 
     // Should never reach it
     return 0;
