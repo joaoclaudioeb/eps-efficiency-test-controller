@@ -33,3 +33,8 @@
 
 # Build files
 **/build
+**/.cache
+
+# LSP files
+**/compile_commands.json
+compile_commands.json
