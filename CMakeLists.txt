@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.12)
 
-set(PICO_SDK_PATH $ENV{PICO_SDK_PATH})
+set(PICO_SDK_PATH ${CMAKE_SOURCE_DIR}/sdk/pico)
 set(FREERTOS_KERNEL_PATH ${CMAKE_SOURCE_DIR}/os/FreeRTOS)
 
 include(${PICO_SDK_PATH}/external/pico_sdk_import.cmake)
