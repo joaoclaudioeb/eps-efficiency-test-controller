@@ -1,26 +1,26 @@
-# Prerequisites
+# Dependency files
 *.d
 
-# Compiled Object files
+# Object files
 *.slo
 *.lo
 *.o
 *.obj
 
-# Precompiled Headers
+# Precompiled headers
 *.gch
 *.pch
 
-# Compiled Dynamic libraries
+# Dynamic libraries
 *.so
 *.dylib
 *.dll
 
-# Fortran module files
+# Module files
 *.mod
 *.smod
 
-# Compiled Static libraries
+# Static libraries
 *.lai
 *.la
 *.a
