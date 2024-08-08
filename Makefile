@@ -1,5 +1,5 @@
 BUILD_DIR=build
-CMAKE_SRC=.
+CMAKE_SRC_DIR=.
 
 MAKEFLAGS += --no-print-directory
 
@@ -9,8 +9,12 @@ all: CMakeLists.txt
 
 .PHONY:
 configure: CMakeLists.txt
-	@cmake -S $(CMAKE_SRC) -B $(BUILD_DIR) 
+	@cmake -S $(CMAKE_SRC_DIR) -B $(BUILD_DIR) 
 
 .PHONY:
 clean: CMakeLists.txt
 	@cmake --build $(BUILD_DIR) --target clean
+
+.PHONY:
+cleanall: CMakeLists.txt
+	rm -rf $(CMAKE_SRC_DIR)/build

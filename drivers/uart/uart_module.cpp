@@ -40,3 +40,21 @@ int drivers::UartController::puts(const char *str)
 
     return this->write(reinterpret_cast<const uint8_t*>(str), size);
 }
+
+int drivers::UartController::flush()
+{
+    if (!adapter_ || !adapter_->priv_data || !adapter_->flush)
+        return -1;
+
+    adapter_->flush(adapter_->priv_data);
+
+    return 0;
+}
+
+int drivers::UartController::poll()
+{
+    if (!adapter_ || !adapter_->priv_data || !adapter_->poll)
+        return -1;
+
+    return adapter_->poll(adapter_->priv_data);
+}
