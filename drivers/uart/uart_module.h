@@ -56,6 +56,8 @@ public:
   int write(const uint8_t *data, const size_t size);
   int read(uint8_t *data, const size_t size);
   int puts(const char *str);
+  int poll();
+  int flush();
 
 private:
   unsigned int parse_config_to_flags(void);
