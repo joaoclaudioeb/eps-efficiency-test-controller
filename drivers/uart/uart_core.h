@@ -8,7 +8,8 @@ struct uart_adapter {
     int (*init)(void* priv_data, unsigned int flags);
     int (*write)(void* priv_data, const uint8_t *data, const uint32_t size);
     int (*read)(void* priv_data, uint8_t *data, const uint32_t size);
-    int (*pool)(void* priv_data);
+    int (*poll)(void* priv_data);
+    int (*flush)(void* priv_data);
 };
 
 void *match_adapter(unsigned int port, unsigned int flags);
