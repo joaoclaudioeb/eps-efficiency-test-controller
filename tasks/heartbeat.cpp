@@ -17,7 +17,7 @@
 #include "projdefs.h"         //!< FreeRTOS
 
 //! Project-specific Drivers
-#include "drivers/gpio_module.h"
+#include "drivers/gpio/gpio_module.hpp"
 
 //! Project-specific Headers
 #include "heartbeat.hpp"
@@ -27,14 +27,14 @@ TaskHandle_t xTaskHeartbeatHandle;
 void vTaskHeartbeat(void *pvParameters) {
 
     //! Configure GPIO
-    GPIO gpio;
+    drivers::GpioController gpio;
     
-    gpio.initPin(HEARTBEAT);
-    gpio.setDirection(HEARTBEAT, gpio_dir::OUTPUT);
-    gpio.setState(HEARTBEAT, gpio_state::HIGH);
+    gpio.init(HEARTBEAT);
+    gpio.dir(HEARTBEAT, drivers::gpio_dir::OUTPUT);
+    gpio.set(HEARTBEAT, drivers::gpio_state::LOW);
 
     while(true) {
-        gpio.togglePin(HEARTBEAT);
+        gpio.toggle(HEARTBEAT);
         vTaskDelay(TASK_HEARTBEAT_PERIOD_MS);
     }
 };

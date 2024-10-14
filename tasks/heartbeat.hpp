@@ -24,7 +24,7 @@
 #define TASK_HEARTBEAT_CORE                 (( 1 << 1 ) | ( 1 << 0 )) //!< Can run in both cores
 
 //! Task-related macros
-#define HEARTBEAT           gpio_id::P25
+#define HEARTBEAT           drivers::gpio_id::P25
 
 //!
 //! @brief Heartbeat task handle.

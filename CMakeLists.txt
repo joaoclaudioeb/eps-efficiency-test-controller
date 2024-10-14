@@ -34,8 +34,9 @@ add_executable(
   main
   main.cpp
   ${CMAKE_SOURCE_DIR}/drivers/uart/arch/rsp_pico.cpp
+  ${CMAKE_SOURCE_DIR}/drivers/gpio/arch/rsp_pico.cpp
   ${CMAKE_SOURCE_DIR}/drivers/uart/uart_module.cpp
-  ${CMAKE_SOURCE_DIR}/drivers/gpio_module.cpp
+  ${CMAKE_SOURCE_DIR}/drivers/gpio/gpio_module.cpp
   ${CMAKE_SOURCE_DIR}/drivers/pwm_module.cpp
   ${CMAKE_SOURCE_DIR}/tasks/test_routine.cpp
   ${CMAKE_SOURCE_DIR}/tasks/heartbeat.cpp

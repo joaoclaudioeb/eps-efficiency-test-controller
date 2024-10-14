@@ -19,7 +19,7 @@
 
 //! Project-specific Drivers
 #include "drivers/uart/uart_module.h"
-#include "drivers/gpio_module.h"
+#include "drivers/gpio/gpio_module.hpp"
 #include "drivers/pwm_module.h"
 
 //! Project-specific Headers
@@ -36,37 +36,37 @@ void vTaskTestRoutine(void *pvParameters) {
     drivers::UartController uart{uart_cfg};
 
     //! Configure GPIO
-    GPIO gpio;
+    drivers::GpioController gpio;
     
-    gpio.initPin(EN_5V0_CHN_A);
-    gpio.initPin(EN_3V3_CHN_A);
-    gpio.initPin(EN_5V0_CHN_B);
-    gpio.initPin(EN_3V3_CHN_B);
-    gpio.initPin(EN_OUTPUT_CHN_0);
-    gpio.initPin(EN_OUTPUT_CHN_1);
-    gpio.initPin(EN_OUTPUT_CHN_2);
-    gpio.initPin(EN_BQ_OUTPUT_CHN_A);
-    gpio.initPin(EN_BQ_OUTPUT_CHN_B);
-    gpio.initPin(TRIGGER_MEASUREMENT);
+    gpio.init(EN_5V0_CHN_A);
+    gpio.init(EN_3V3_CHN_A);
+    gpio.init(EN_5V0_CHN_B);
+    gpio.init(EN_3V3_CHN_B);
+    gpio.init(EN_OUTPUT_CHN_0);
+    gpio.init(EN_OUTPUT_CHN_1);
+    gpio.init(EN_OUTPUT_CHN_2);
+    gpio.init(EN_BQ_OUTPUT_CHN_A);
+    gpio.init(EN_BQ_OUTPUT_CHN_B);
+    gpio.init(TRIGGER_MEASUREMENT);
     
-    gpio.setDirection(EN_3V3_CHN_A, gpio_dir::OUTPUT);
-    gpio.setDirection(EN_5V0_CHN_A, gpio_dir::OUTPUT); 
-    gpio.setDirection(EN_5V0_CHN_B, gpio_dir::OUTPUT);
-    gpio.setDirection(EN_3V3_CHN_B, gpio_dir::OUTPUT);
-    gpio.setDirection(EN_OUTPUT_CHN_0, gpio_dir::OUTPUT);
-    gpio.setDirection(EN_OUTPUT_CHN_1, gpio_dir::OUTPUT);
-    gpio.setDirection(EN_OUTPUT_CHN_2, gpio_dir::OUTPUT);
-    gpio.setDirection(EN_BQ_OUTPUT_CHN_A, gpio_dir::OUTPUT);
-    gpio.setDirection(EN_BQ_OUTPUT_CHN_B, gpio_dir::OUTPUT);
-    gpio.setDirection(TRIGGER_MEASUREMENT, gpio_dir::OUTPUT);
+    gpio.dir(EN_3V3_CHN_A, drivers::gpio_dir::OUTPUT);
+    gpio.dir(EN_5V0_CHN_A, drivers::gpio_dir::OUTPUT); 
+    gpio.dir(EN_5V0_CHN_B, drivers::gpio_dir::OUTPUT);
+    gpio.dir(EN_3V3_CHN_B, drivers::gpio_dir::OUTPUT);
+    gpio.dir(EN_OUTPUT_CHN_0, drivers::gpio_dir::OUTPUT);
+    gpio.dir(EN_OUTPUT_CHN_1, drivers::gpio_dir::OUTPUT);
+    gpio.dir(EN_OUTPUT_CHN_2, drivers::gpio_dir::OUTPUT);
+    gpio.dir(EN_BQ_OUTPUT_CHN_A, drivers::gpio_dir::OUTPUT);
+    gpio.dir(EN_BQ_OUTPUT_CHN_B, drivers::gpio_dir::OUTPUT);
+    gpio.dir(TRIGGER_MEASUREMENT, drivers::gpio_dir::OUTPUT);
     
-    gpio.setState(EN_3V3_CHN_A, gpio_state::HIGH);
-    gpio.setState(EN_5V0_CHN_A, gpio_state::HIGH);
-    gpio.setState(EN_3V3_CHN_B, gpio_state::HIGH);
-    gpio.setState(EN_5V0_CHN_B, gpio_state::HIGH);
-    gpio.setState(EN_BQ_OUTPUT_CHN_A, gpio_state::HIGH);
-    gpio.setState(EN_BQ_OUTPUT_CHN_B, gpio_state::HIGH);
-    gpio.setState(TRIGGER_MEASUREMENT, gpio_state::LOW);
+    gpio.set(EN_3V3_CHN_A, drivers::gpio_state::HIGH);
+    gpio.set(EN_5V0_CHN_A, drivers::gpio_state::HIGH);
+    gpio.set(EN_3V3_CHN_B, drivers::gpio_state::HIGH);
+    gpio.set(EN_5V0_CHN_B, drivers::gpio_state::HIGH);
+    gpio.set(EN_BQ_OUTPUT_CHN_A, drivers::gpio_state::HIGH);
+    gpio.set(EN_BQ_OUTPUT_CHN_B, drivers::gpio_state::HIGH);
+    gpio.set(TRIGGER_MEASUREMENT, drivers::gpio_state::LOW);
 
     unsigned char cmd, lock;
     // uint8_t lookup_table[22] = {1, 2, 3, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95};
@@ -90,42 +90,42 @@ void vTaskTestRoutine(void *pvParameters) {
         // Activate correct channel
         switch (cmd) {
         case 'A':
-            gpio.setState(EN_3V3_CHN_A, gpio_state::LOW);
-            gpio.setState(EN_5V0_CHN_A, gpio_state::LOW);
-            gpio.setState(EN_3V3_CHN_B, gpio_state::HIGH);
-            gpio.setState(EN_5V0_CHN_B, gpio_state::HIGH);
+            gpio.set(EN_3V3_CHN_A, drivers::gpio_state::LOW);
+            gpio.set(EN_5V0_CHN_A, drivers::gpio_state::LOW);
+            gpio.set(EN_3V3_CHN_B, drivers::gpio_state::HIGH);
+            gpio.set(EN_5V0_CHN_B, drivers::gpio_state::HIGH);
             state = 0;
             break;
         case 'B':
-            gpio.setState(EN_3V3_CHN_A, gpio_state::HIGH);
-            gpio.setState(EN_5V0_CHN_A, gpio_state::HIGH);
-            gpio.setState(EN_3V3_CHN_B, gpio_state::LOW);
-            gpio.setState(EN_5V0_CHN_B, gpio_state::LOW);
+            gpio.set(EN_3V3_CHN_A, drivers::gpio_state::HIGH);
+            gpio.set(EN_5V0_CHN_A, drivers::gpio_state::HIGH);
+            gpio.set(EN_3V3_CHN_B, drivers::gpio_state::LOW);
+            gpio.set(EN_5V0_CHN_B, drivers::gpio_state::LOW);
             state = 0;
             break;
         case 'E':
-            gpio.setState(EN_3V3_CHN_A, gpio_state::LOW);
-            gpio.setState(EN_5V0_CHN_A, gpio_state::LOW);
-            gpio.setState(EN_3V3_CHN_B, gpio_state::HIGH);
-            gpio.setState(EN_5V0_CHN_B, gpio_state::HIGH);
+            gpio.set(EN_3V3_CHN_A, drivers::gpio_state::LOW);
+            gpio.set(EN_5V0_CHN_A, drivers::gpio_state::LOW);
+            gpio.set(EN_3V3_CHN_B, drivers::gpio_state::HIGH);
+            gpio.set(EN_5V0_CHN_B, drivers::gpio_state::HIGH);
             state = 1;
             break;
         case 'C':
-            gpio.setState(EN_3V3_CHN_A, gpio_state::HIGH);
-            gpio.setState(EN_5V0_CHN_A, gpio_state::HIGH);
-            gpio.setState(EN_3V3_CHN_B, gpio_state::LOW);
-            gpio.setState(EN_5V0_CHN_B, gpio_state::LOW);
-            gpio.setState(EN_BQ_OUTPUT_CHN_A, gpio_state::HIGH);
-            gpio.setState(EN_BQ_OUTPUT_CHN_B, gpio_state::LOW);
+            gpio.set(EN_3V3_CHN_A, drivers::gpio_state::HIGH);
+            gpio.set(EN_5V0_CHN_A, drivers::gpio_state::HIGH);
+            gpio.set(EN_3V3_CHN_B, drivers::gpio_state::LOW);
+            gpio.set(EN_5V0_CHN_B, drivers::gpio_state::LOW);
+            gpio.set(EN_BQ_OUTPUT_CHN_A, drivers::gpio_state::HIGH);
+            gpio.set(EN_BQ_OUTPUT_CHN_B, drivers::gpio_state::LOW);
             state = 2;
             break;
         case 'D':
-            gpio.setState(EN_3V3_CHN_A, gpio_state::HIGH);
-            gpio.setState(EN_5V0_CHN_A, gpio_state::HIGH);
-            gpio.setState(EN_3V3_CHN_B, gpio_state::LOW);
-            gpio.setState(EN_5V0_CHN_B, gpio_state::LOW);
-            gpio.setState(EN_BQ_OUTPUT_CHN_A, gpio_state::LOW);
-            gpio.setState(EN_BQ_OUTPUT_CHN_B, gpio_state::HIGH);
+            gpio.set(EN_3V3_CHN_A, drivers::gpio_state::HIGH);
+            gpio.set(EN_5V0_CHN_A, drivers::gpio_state::HIGH);
+            gpio.set(EN_3V3_CHN_B, drivers::gpio_state::LOW);
+            gpio.set(EN_5V0_CHN_B, drivers::gpio_state::LOW);
+            gpio.set(EN_BQ_OUTPUT_CHN_A, drivers::gpio_state::LOW);
+            gpio.set(EN_BQ_OUTPUT_CHN_B, drivers::gpio_state::HIGH);
             state = 2;
             break;
         default:
@@ -137,9 +137,9 @@ void vTaskTestRoutine(void *pvParameters) {
         uart.read(&cmd, 1);
 
         
-        gpio.setState(EN_OUTPUT_CHN_0, gpio_state::HIGH);
-        gpio.setState(EN_OUTPUT_CHN_1, gpio_state::HIGH);
-        gpio.setState(EN_OUTPUT_CHN_2, gpio_state::HIGH);
+        gpio.set(EN_OUTPUT_CHN_0, drivers::gpio_state::HIGH);
+        gpio.set(EN_OUTPUT_CHN_1, drivers::gpio_state::HIGH);
+        gpio.set(EN_OUTPUT_CHN_2, drivers::gpio_state::HIGH);
         
         pwm_config_t cfg = {
             .pin = PWM_CONTROLLED_LOAD, // P08 is the 
@@ -161,9 +161,9 @@ void vTaskTestRoutine(void *pvParameters) {
                 vTaskDelay(1000 / portTICK_PERIOD_MS);
                 for (uint8_t j = 0; j < 30; j++) {
                     vTaskDelay(120 / portTICK_PERIOD_MS);
-                    gpio.setState(TRIGGER_MEASUREMENT, gpio_state::HIGH); // P05 is the signal pin for controlling the multimeter
+                    gpio.set(TRIGGER_MEASUREMENT, drivers::gpio_state::HIGH); // P05 is the signal pin for controlling the multimeter
                     vTaskDelay(10 / portTICK_PERIOD_MS);
-                    gpio.setState(TRIGGER_MEASUREMENT, gpio_state::LOW);
+                    gpio.set(TRIGGER_MEASUREMENT, drivers::gpio_state::LOW);
                 }
                 uart.puts("Duty cycle: ");
                 uart.write(&lookup_table[i], 1);
@@ -173,13 +173,13 @@ void vTaskTestRoutine(void *pvParameters) {
             cfg.duty_cycle = 0;
             pwm.setDutyCycle(cfg);
 
-            gpio.setState(EN_3V3_CHN_A, gpio_state::HIGH);
-            gpio.setState(EN_5V0_CHN_A, gpio_state::HIGH);
-            gpio.setState(EN_3V3_CHN_B, gpio_state::HIGH);
-            gpio.setState(EN_5V0_CHN_B, gpio_state::HIGH);
-            gpio.setState(EN_OUTPUT_CHN_0, gpio_state::LOW);
-            gpio.setState(EN_OUTPUT_CHN_1, gpio_state::LOW);
-            gpio.setState(EN_OUTPUT_CHN_2, gpio_state::LOW);
+            gpio.set(EN_3V3_CHN_A, drivers::gpio_state::HIGH);
+            gpio.set(EN_5V0_CHN_A, drivers::gpio_state::HIGH);
+            gpio.set(EN_3V3_CHN_B, drivers::gpio_state::HIGH);
+            gpio.set(EN_5V0_CHN_B, drivers::gpio_state::HIGH);
+            gpio.set(EN_OUTPUT_CHN_0, drivers::gpio_state::LOW);
+            gpio.set(EN_OUTPUT_CHN_1, drivers::gpio_state::LOW);
+            gpio.set(EN_OUTPUT_CHN_2, drivers::gpio_state::LOW);
             uart.puts("Finished test\n");
             break;
         case 1: // This block is used only for debug purpuses
@@ -198,9 +198,9 @@ void vTaskTestRoutine(void *pvParameters) {
                 if (cmd == 'S'){
                     for (uint8_t j = 0; j < 50; j++) {
                         vTaskDelay(120 / portTICK_PERIOD_MS);
-                        gpio.setState(TRIGGER_MEASUREMENT, gpio_state::HIGH);
+                        gpio.set(TRIGGER_MEASUREMENT, drivers::gpio_state::HIGH);
                         vTaskDelay(10 / portTICK_PERIOD_MS);
-                        gpio.setState(TRIGGER_MEASUREMENT, gpio_state::LOW);
+                        gpio.set(TRIGGER_MEASUREMENT, drivers::gpio_state::LOW);
                     }
                 }
                 uart.puts("Do you want to make more tests? (Y, N) \n");

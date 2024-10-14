@@ -3,8 +3,10 @@
 #include <stdint.h>
 #include <hardware/uart.h>
 
-#define GPIO_UART0_TX_PIN 0
-#define GPIO_UART0_RX_PIN 1
+#define GPIO_UART0_TX_PIN       0
+#define GPIO_UART0_RX_PIN       1
+
+#define UART_FIFO_MAX_LEN       16U
 
 struct uart_dev {
     uart_inst_t *port;
@@ -50,6 +52,28 @@ int rsp_uart_read(void* priv_data, uint8_t *data, const uint32_t size)
     return 0;
 }
 
+int rsp_uart_flush(void* priv_data)
+{
+    uart_dev *dev = reinterpret_cast<uart_dev*>(priv_data);
+
+    uint8_t bytes_flushed = 0U;
+    uint8_t dummy;
+
+    while (uart_is_readable(dev->port) && bytes_flushed < UART_FIFO_MAX_LEN) {
+        uart_read_blocking(dev->port, &dummy, 1U);
+        ++bytes_flushed;
+    }
+
+    return 0;
+}
+
+int rsp_uart_poll(void* priv_data)
+{
+    uart_dev *dev = reinterpret_cast<uart_dev*>(priv_data);
+
+    return uart_is_readable(dev->port);
+}
+
 static uart_dev uart_1 {
     .port = uart1,
     .flags = 0U,
@@ -67,7 +91,8 @@ static uart_adapter uart_adap_0 = {
     .init = rsp_uart_init,
     .write = rsp_uart_write,
     .read = rsp_uart_read,
-    .pool = nullptr,
+    .poll = rsp_uart_poll,
+    .flush = rsp_uart_flush,
 };
 
 static uart_adapter uart_adap_1 = {
@@ -75,7 +100,8 @@ static uart_adapter uart_adap_1 = {
     .init = rsp_uart_init,
     .write = rsp_uart_write,
     .read = rsp_uart_read,
-    .pool = nullptr,
+    .poll = rsp_uart_poll,
+    .flush = rsp_uart_flush,
 };
 
 void *match_adapter(unsigned int port, unsigned int flags)

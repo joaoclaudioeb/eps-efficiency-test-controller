@@ -17,7 +17,7 @@ PWM::PWM() {}
 PWM::~PWM() {}
 
 void PWM::configPwmPin(pwm_config_t config) {
-    gpio_set_function(static_cast<unsigned int>(config.pin), static_cast<gpio_function>(gpio_func::PWM));
+    gpio_set_function(static_cast<unsigned int>(config.pin), static_cast<gpio_function>(drivers::gpio_func::PWM));
 }
 
 void PWM::enablePwmPin(pwm_config_t config, pwm_state state) {

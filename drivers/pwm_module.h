@@ -15,7 +15,8 @@
 #define PWM_MODULE_H_
 
 /* Internal headers */
-#include "gpio_module.h"
+#include "gpio/gpio_module.hpp"
+#include "gpio/gpio_core.hpp"
 
 /* Raspberry-related headers */
 #include "hardware/pwm.h"
@@ -28,7 +29,7 @@ enum class pwm_state {
 
 /* Structs */
 typedef struct {
-    gpio_id pin;
+    drivers::gpio_id pin;
     int duty_cycle;
     int frequency;
 } pwm_config_t;

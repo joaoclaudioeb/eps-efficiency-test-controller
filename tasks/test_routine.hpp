@@ -28,20 +28,20 @@
 #define ARRAY_SIZE(arr) (sizeof(arr) / sizeof((arr)[0]))
 
 //! Task-related macros
-#define EN_5V0_CHN_A           gpio_id::P21
-#define EN_3V3_CHN_A           gpio_id::P20
-#define EN_5V0_CHN_B           gpio_id::P19
-#define EN_3V3_CHN_B           gpio_id::P18
-#define EN_OUTPUT_CHN_0        gpio_id::P13 //!< RadioMain_EN
-#define EN_OUTPUT_CHN_1        gpio_id::P14 //!< RadioBeacon_EN
-#define EN_OUTPUT_CHN_2        gpio_id::P15 //!< Payload_EN
-//#define EN_OUTPUT_CHN_3       gpio_id::Pxx //!< AntDep_EN
-//#define EN_OUTPUT_CHN_4       gpio_id::Pxx //!< Beacon_EN
-//#define EN_OUTPUT_CHN_5       gpio_id::Pxx //!< OBDH_EN
-#define EN_BQ_OUTPUT_CHN_A     gpio_id::P27
-#define EN_BQ_OUTPUT_CHN_B     gpio_id::P26
-#define TRIGGER_MEASUREMENT    gpio_id::P05
-#define PWM_CONTROLLED_LOAD    gpio_id::P08
+#define EN_5V0_CHN_A           drivers::gpio_id::P21
+#define EN_3V3_CHN_A           drivers::gpio_id::P20
+#define EN_5V0_CHN_B           drivers::gpio_id::P19
+#define EN_3V3_CHN_B           drivers::gpio_id::P18
+#define EN_OUTPUT_CHN_0        drivers::gpio_id::P13 //!< RadioMain_EN
+#define EN_OUTPUT_CHN_1        drivers::gpio_id::P14 //!< RadioBeacon_EN
+#define EN_OUTPUT_CHN_2        drivers::gpio_id::P15 //!< Payload_EN
+//#define EN_OUTPUT_CHN_3       drivers::gpio_id::Pxx //!< AntDep_EN
+//#define EN_OUTPUT_CHN_4       drivers::gpio_id::Pxx //!< Beacon_EN
+//#define EN_OUTPUT_CHN_5       drivers::gpio_id::Pxx //!< OBDH_EN
+#define EN_BQ_OUTPUT_CHN_A     drivers::gpio_id::P27
+#define EN_BQ_OUTPUT_CHN_B     drivers::gpio_id::P26
+#define TRIGGER_MEASUREMENT    drivers::gpio_id::P05
+#define PWM_CONTROLLED_LOAD    drivers::gpio_id::P08
 
 //!
 //! @brief Heartbeat task handle.
