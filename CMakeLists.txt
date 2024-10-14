@@ -37,7 +37,9 @@ add_executable(
   ${CMAKE_SOURCE_DIR}/drivers/uart/uart_module.cpp
   ${CMAKE_SOURCE_DIR}/drivers/gpio_module.cpp
   ${CMAKE_SOURCE_DIR}/drivers/pwm_module.cpp
-  ${CMAKE_SOURCE_DIR}/tasks/basic_test_routine.cpp
+  ${CMAKE_SOURCE_DIR}/tasks/test_routine.cpp
+  ${CMAKE_SOURCE_DIR}/tasks/heartbeat.cpp
+  ${CMAKE_SOURCE_DIR}/config/tasks.cpp
 )
 
 target_include_directories(main PUBLIC

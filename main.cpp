@@ -1,23 +1,28 @@
-/**
- * @file main.cpp
- *
- * @brief TODO.
- *
- * @details TODO. 
- *
- * @author João Cláudio Elsen Barcellos <joao.barcellos@posgrad.ufsc.br>
- * @version 0.0.0
- * @date 29/07/2024
- */
+//!
+//! @file main.cpp
+//!
+//! @brief This file creates all the project's tasks.
+//!
+//! @author João Cláudio Elsen Barcellos <joaoclaudiobarcellos@gmail.com>
+//! @version 0.0.0
+//!
+//! @date 06/08/2024
+//!
 
-// TODO: Add headers here
-#include "tasks/basic_test_routine.h"
+//! External Libraries
+#include <FreeRTOS.h>    //!< FreeRTOS
+#include <task.h>        //!< FreeRTOS
+
+//! Project-specific Headers
+#include "config/tasks.hpp"
 
 int main(void)
 {
-    // TODO: Add some code here
-    xTaskCreate(basicTestRoutineTask, TASK_BASIC_TEST_ROUTINE_TASK_NAME, TASK_BASIC_TEST_ROUTINE_TASK_STACK_SIZE, nullptr, TASK_BASIC_TEST_ROUTINE_TASK_PRIORITY, nullptr);
+    //! Create all the prject's tasks
+    create_tasks();
+    //! Start the scheduler
     vTaskStartScheduler();
+    //! Should never reach it
     return 0;
 }
 
