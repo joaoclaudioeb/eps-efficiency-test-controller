@@ -35,6 +35,11 @@ add_executable(
   main.cpp
   ${CMAKE_SOURCE_DIR}/drivers/uart/arch/rsp_pico.cpp
   ${CMAKE_SOURCE_DIR}/drivers/uart/uart_module.cpp
+  ${CMAKE_SOURCE_DIR}/drivers/gpio_module.cpp
+  ${CMAKE_SOURCE_DIR}/drivers/pwm_module.cpp
+  ${CMAKE_SOURCE_DIR}/tasks/test_routine.cpp
+  ${CMAKE_SOURCE_DIR}/tasks/heartbeat.cpp
+  ${CMAKE_SOURCE_DIR}/config/tasks.cpp
 )
 
 target_include_directories(main PUBLIC
@@ -46,4 +51,4 @@ target_include_directories(main PUBLIC
 pico_enable_stdio_usb(main 1)
 
 pico_add_extra_outputs(main)
-target_link_libraries(main pico_stdlib freertos)
+target_link_libraries(main pico_stdlib hardware_pwm freertos)
