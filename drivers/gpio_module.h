@@ -16,6 +16,7 @@
 
 /* Raspberry-related headers*/
 #include "hardware/gpio.h"
+#include <vector>
 
 /* Enumerations*/
 enum class gpio_id {
@@ -58,16 +59,14 @@ public:
     ~GPIO();
           
     void initPin(gpio_id pin);
-
     void setFunction(gpio_id pin, gpio_function function);
-
     void setDirection(gpio_id pin, gpio_dir dir);
-
     void setState(gpio_id pin, gpio_state state);
-
     bool getState(gpio_id pin);
-
     void togglePin(gpio_id pin);
+    void initMultiPins(const std::vector<gpio_id>& pins);
+    void setMultiOut(const std::vector<gpio_id>& pins);
+    void setMultiState(const std::vector<gpio_id>& pins, uint32_t value);
 };
 
 #endif /* GPIO_MODULE_H_ */

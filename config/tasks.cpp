@@ -16,6 +16,7 @@
 //! Project-specific Headers
 #include "../tasks/test_routine.hpp"
 #include "../tasks/heartbeat.hpp"
+#include "../tasks/re2ps_read_routine.hpp"
 
 void create_tasks(void) {
 #if EN_TASK_TEST_ROUTINE == 1
@@ -42,6 +43,19 @@ void create_tasks(void) {
     }
 //! EN_TASK_HEARTBEAT    
 #endif
+
+
+#if EN_TASK_RE2PS_READ_ROUTINE == 1
+    xTaskCreate(vTaskRe2psReadRoutine, TASK_RE2PS_READ_ROUTINE_NAME, TASK_RE2PS_READ_ROUTINE_STACK_SIZE, nullptr, TASK_RE2PS_READ_ROUTINE_PRIORITY, &xTaskRe2psReadRoutineHandle);
+    
+    //! Set the core affinity mask for the task */
+    vTaskCoreAffinitySet(xTaskHeartbeatHandle, TASK_RE2PS_READ_ROUTINE_CORE);
+
+    if (xTaskRe2psReadRoutineHandle == NULL) {
+        //! Error creating the startup task
+    }
+//! EN_TASK_RE2PS_READ_ROUTINE    
+#endif    
 }
 
 void create_event_groups(void)

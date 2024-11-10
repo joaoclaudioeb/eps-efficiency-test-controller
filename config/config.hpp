@@ -13,8 +13,9 @@
 #define CONFIG_H_
 
 //! Tasks
-#define EN_TASK_TEST_ROUTINE        1
-#define EN_TASK_HEARTBEAT           1
+#define EN_TASK_TEST_ROUTINE                 0
+#define EN_TASK_HEARTBEAT                    0
+#define EN_TASK_RE2PS_READ_ROUTINE           1
 //!< Add more tasks here
 
 //! Drivers
