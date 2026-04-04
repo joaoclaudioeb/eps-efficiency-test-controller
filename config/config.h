@@ -13,7 +13,8 @@
 #define CONFIG_H_
 
 //! Tasks
-#define EN_TASK_TEST_ROUTINE        1
+#define EN_TASK_TEST_ROUTINE        0
+#define EN_TASK_TEST_ROUTINE_2      1
 #define EN_TASK_HEARTBEAT           1
 //!< Add more tasks here
 

@@ -10,16 +10,17 @@
 //!
 
 //! Project-specific Drivers
-#include "config.hpp"
-#include "tasks.hpp"
+#include "config.h"
+#include "tasks.h"
 
 //! Project-specific Headers
-#include "../tasks/test_routine.hpp"
-#include "../tasks/heartbeat.hpp"
+#include "../tasks/test_routine.h"
+#include "../tasks/test_routine_2.h"
+#include "../tasks/heartbeat.h"
 
 void create_tasks(void) {
 #if EN_TASK_TEST_ROUTINE == 1
-    xTaskCreate(vTaskTestRoutine, TASK_TEST_ROUTINE_NAME, TASK_TEST_ROUTINE_STACK_SIZE, nullptr, TASK_TEST_ROUTINE_PRIORITY, &xTaskTestRoutineHandle);
+    xTaskCreate(vTaskTestRoutine, TASK_TEST_ROUTINE_NAME, TASK_TEST_ROUTINE_STACK_SIZE, NULL, TASK_TEST_ROUTINE_PRIORITY, &xTaskTestRoutineHandle);
     
     //! Set the core affinity mask for the task */
     vTaskCoreAffinitySet(xTaskTestRoutineHandle, TASK_TEST_ROUTINE_CORE);
@@ -32,7 +33,7 @@ void create_tasks(void) {
 
 
 #if EN_TASK_HEARTBEAT == 1
-    xTaskCreate(vTaskHeartbeat, TASK_HEARTBEAT_NAME, TASK_HEARTBEAT_STACK_SIZE, nullptr, TASK_HEARTBEAT_PRIORITY, &xTaskHeartbeatHandle);
+    xTaskCreate(vTaskHeartbeat, TASK_HEARTBEAT_NAME, TASK_HEARTBEAT_STACK_SIZE, NULL, TASK_HEARTBEAT_PRIORITY, &xTaskHeartbeatHandle);
     
     //! Set the core affinity mask for the task */
     vTaskCoreAffinitySet(xTaskHeartbeatHandle, TASK_HEARTBEAT_CORE);
@@ -41,6 +42,19 @@ void create_tasks(void) {
         //! Error creating the startup task
     }
 //! EN_TASK_HEARTBEAT    
+#endif
+
+    
+#if EN_TASK_TEST_ROUTINE_2 == 1
+    xTaskCreate(vTaskTestRoutine2, TASK_TEST_ROUTINE_2_NAME, TASK_TEST_ROUTINE_2_STACK_SIZE, NULL, TASK_TEST_ROUTINE_2_PRIORITY, &xTaskTestRoutine2Handle);
+    
+    //! Set the core affinity mask for the task */
+    vTaskCoreAffinitySet(xTaskTestRoutine2Handle, TASK_TEST_ROUTINE_2_CORE);
+
+    if (xTaskTestRoutine2Handle == NULL) {
+        //! Error creating the startup task
+    }
+//! EN_TASK_TEST_ROUTINE_2    
 #endif
 }
 

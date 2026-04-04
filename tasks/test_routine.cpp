@@ -23,7 +23,7 @@
 #include "drivers/pwm_module.h"
 
 //! Project-specific Headers
-#include "test_routine.hpp"
+#include "test_routine.h"
 
 TaskHandle_t xTaskTestRoutineHandle;
 

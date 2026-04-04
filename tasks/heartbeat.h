@@ -16,6 +16,11 @@
 #include <FreeRTOS.h>    //!< FreeRTOS
 #include <task.h>        //!< FreeRTOS
 
+// ← ADICIONE ISTO:
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 //! Task properties
 #define TASK_HEARTBEAT_NAME                 "Heartbeat"
 #define TASK_HEARTBEAT_STACK_SIZE           100
@@ -38,5 +43,9 @@ extern TaskHandle_t xTaskHeartbeatHandle;
 //!
 void vTaskHeartbeat(void *pvParameters);
 
+#ifdef __cplusplus
+}
+#endif
+    
 //! HEARTBEAT_HPP_
 #endif 

@@ -32,23 +32,26 @@ target_link_libraries(freertos
 
 add_executable(
   main
-  main.cpp
+  main.c
   ${CMAKE_SOURCE_DIR}/drivers/uart/arch/rsp_pico.cpp
   ${CMAKE_SOURCE_DIR}/drivers/uart/uart_module.cpp
-  ${CMAKE_SOURCE_DIR}/drivers/gpio_module.cpp
-  ${CMAKE_SOURCE_DIR}/drivers/pwm_module.cpp
-  ${CMAKE_SOURCE_DIR}/tasks/test_routine.cpp
+  ${CMAKE_SOURCE_DIR}/device-drivers/ads1256/ads1256.c
+  ${CMAKE_SOURCE_DIR}/drivers/gpio_module.c
+  ${CMAKE_SOURCE_DIR}/drivers/pwm_module.c
+  ${CMAKE_SOURCE_DIR}/tasks/test_routine_2.c
   ${CMAKE_SOURCE_DIR}/tasks/heartbeat.cpp
-  ${CMAKE_SOURCE_DIR}/config/tasks.cpp
+  ${CMAKE_SOURCE_DIR}/config/tasks.c
 )
 
 target_include_directories(main PUBLIC
     ${CMAKE_SOURCE_DIR}
+    ${CMAKE_SOURCE_DIR}/device-drivers/
     ${CMAKE_SOURCE_DIR}/drivers/
     ${CMAKE_SOURCE_DIR}/drivers/uart/
 )
 
 pico_enable_stdio_usb(main 1)
+pico_enable_stdio_uart(main 0)
 
 pico_add_extra_outputs(main)
-target_link_libraries(main pico_stdlib hardware_pwm freertos)
+target_link_libraries(main pico_stdlib hardware_pwm hardware_spi freertos)

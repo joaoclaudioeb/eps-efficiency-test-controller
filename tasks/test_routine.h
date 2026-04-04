@@ -17,6 +17,11 @@
 #include <FreeRTOS.h>    //!< FreeRTOS
 #include <task.h>        //!< FreeRTOS
 
+// ← ADICIONE ISTO:
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 //! Task properties
 #define TASK_TEST_ROUTINE_NAME                 "Basic Test Routine"
 #define TASK_TEST_ROUTINE_STACK_SIZE           2048
@@ -55,5 +60,9 @@ extern TaskHandle_t xTaskTestRoutineHandle;
 //!
 void vTaskTestRoutine(void *pvParameters);
 
+#ifdef __cplusplus
+}
+#endif
+    
 //! TEST_ROUTINE_HPP_
 #endif 

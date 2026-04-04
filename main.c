@@ -14,7 +14,7 @@
 #include <task.h>        //!< FreeRTOS
 
 //! Project-specific Headers
-#include "config/tasks.hpp"
+#include "config/tasks.h"
 
 int main(void)
 {

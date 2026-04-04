@@ -20,7 +20,7 @@
 #include "drivers/gpio_module.h"
 
 //! Project-specific Headers
-#include "heartbeat.hpp"
+#include "heartbeat.h"
 
 TaskHandle_t xTaskHeartbeatHandle;
 

@@ -1,73 +1,57 @@
 /**
- * @file gpio_module.h
- *
- * @brief TODO.
- *
- * @details TODO. 
- *
- * @author João Cláudio Elsen Barcellos <joao.barcellos@posgrad.ufsc.br>
- * @version 0.0.0
- * @date 29/07/2024
- */
+@file gpio_module.h
+@brief TODO.
+@details TODO.
+@author João Cláudio Elsen Barcellos
+@version 0.0.1
+@date 29/03/2026
+*/
 
+#include <stdint.h>
+#include <stdbool.h>
 
-#ifndef GPIO_MODULE_H_
-#define GPIO_MODULE_H_
-
-/* Raspberry-related headers*/
 #include "hardware/gpio.h"
 
-/* Enumerations*/
-enum class gpio_id {
-    P00 = 0 ,  P01 = 1 ,  P02 = 2 ,  P03 = 3 ,  P04 = 4 ,  P05 = 5 ,  P06 = 6 ,
-    P07 = 7 ,  P08 = 8 ,  P09 = 9 ,  P10 = 10 , P11 = 11 , P12 = 12 , P13 = 13 ,
-    P14 = 14 , P15 = 15 , P16 = 16 , P17 = 17 , P18 = 18 , P19 = 19 , P20 = 20 ,
-    P21 = 21 , P22 = 22 , P23 = 23 , P24 = 24 , P25 = 25 , P26 = 26 , P27 = 27 ,
-    P28 = 28
-};
+typedef enum {
+    GPIO_P00 = 0,  GPIO_P01 = 1,  GPIO_P02 = 2,  GPIO_P03 = 3,
+    GPIO_P04 = 4,  GPIO_P05 = 5,  GPIO_P06 = 6,  GPIO_P07 = 7,
+    GPIO_P08 = 8,  GPIO_P09 = 9,  GPIO_P10 = 10, GPIO_P11 = 11,
+    GPIO_P12 = 12, GPIO_P13 = 13, GPIO_P14 = 14, GPIO_P15 = 15,
+    GPIO_P16 = 16, GPIO_P17 = 17, GPIO_P18 = 18, GPIO_P19 = 19,
+    GPIO_P20 = 20, GPIO_P21 = 21, GPIO_P22 = 22, GPIO_P23 = 23,
+    GPIO_P24 = 24, GPIO_P25 = 25, GPIO_P26 = 26, GPIO_P27 = 27,
+    GPIO_P28 = 28, GPIO_P29 = 29
+} gpio_id_t;
 
-enum class gpio_func {
-    XIP = 0 , SPI = 1 , UART = 2 , I2C = 3 ,
-    PWM = 4 , SIO = 5 , PIO0 = 6 , PIO1 = 7 ,
-    GPCK = 8 , USB = 9 , NONE = 0x1F
-};
+typedef enum {
+    GPIO_FUNC_XIP   = 0,
+    GPIO_FUNC_SPI   = 1,
+    GPIO_FUNC_UART  = 2,
+    GPIO_FUNC_I2C   = 3,
+    GPIO_FUNC_PWM   = 4,
+    GPIO_FUNC_SIO   = 5,
+    GPIO_FUNC_PIO0  = 6,
+    GPIO_FUNC_PIO1  = 7,
+    GPIO_FUNC_GPCK  = 8,
+    GPIO_FUNC_USB   = 9,
+    GPIO_FUNC_NONE  = 0x1F
+} gpio_func_t;
 
-enum class gpio_dir {
-    INPUT = 0,
-    OUTPUT = 1
-};
+typedef enum {
+    GPIO_INPUT  = 0,
+    GPIO_OUTPUT = 1
+} gpio_dir_t;
 
-enum class gpio_state {
-    HIGH = 1,
-    LOW = 0
-};
+typedef enum {
+    GPIO_LOW  = 0,
+    GPIO_HIGH = 1
+} gpio_state_t;
 
-    
-/**
- * @class GPIO
- *
- * @brief TODO.
- *
- * @details TODO.
- */
-class GPIO {
-private:   
-    int err; 
-public:
-    GPIO();        
-    ~GPIO();
-          
-    void initPin(gpio_id pin);
-
-    void setFunction(gpio_id pin, gpio_function function);
-
-    void setDirection(gpio_id pin, gpio_dir dir);
-
-    void setState(gpio_id pin, gpio_state state);
-
-    bool getState(gpio_id pin);
-
-    void togglePin(gpio_id pin);
-};
+void gpio_init_pin(gpio_id_t pin);
+void gpio_set_pin_function(gpio_id_t pin, gpio_func_t function);
+void gpio_set_pin_direction(gpio_id_t pin, gpio_dir_t dir);
+void gpio_set_pin_state(gpio_id_t pin, gpio_state_t state);
+int gpio_get_pin_state(gpio_id_t pin);
+void gpio_toggle_pin(gpio_id_t pin);
 
 #endif /* GPIO_MODULE_H_ */
