@@ -1,21 +1,24 @@
 /**
- * @file ADS1256.c
- * @brief Driver C para ADS1256 - Raspberry Pi Pico SDK
- * @note Conversão literal do original C++ (sem Arduino)
- */
+@file ads1256.c
+@brief Source file for controlling TI's 24-bit ADC, the ADS1256.
+@details This code was based on CuriousScientist0's one (https://github.com/CuriousScientist0/ADS1256/blob/main/src/ADS1256.c and https://www.youtube.com/watch?v=GBWJdyjRIdM&t=262s).
+@author João Cláudio Elsen Barcellos
+@version 0.0.1
+@date 29/03/2026
+*/
 
 #include "ads1256.h"
+
 #include "pico/stdlib.h"
 #include "hardware/spi.h"
 #include "hardware/gpio.h"
-#include <math.h>
 
 #ifndef ADS1256_SPI_INSTANCE
 #define ADS1256_SPI_INSTANCE spi1
 #endif
 
 #ifndef ADS1256_SPI_BAUDRATE
-#define ADS1256_SPI_BAUDRATE 500000
+#define ADS1256_SPI_BAUDRATE 8000000
 #endif
 
 #define BIT_WRITE(var, bit, val)                \
@@ -739,7 +742,15 @@ void ads1256_send_command(ads1256_t *dev, uint8_t cmd)
     gpio_put(dev->cs_pin, 1);
 }
 
-void ads1256_init(ads1256_t *dev, uint8_t drdy_pin, uint8_t reset_pin, uint8_t sync_pin, uint8_t cs_pin, uint8_t miso_pin, uint8_t sclk_pin, uint8_t mosi_pin, float vref)
+void ads1256_init(ads1256_t *dev,
+                  uint8_t drdy_pin,
+                  uint8_t reset_pin,
+                  uint8_t sync_pin,
+                  uint8_t cs_pin,
+                  uint8_t miso_pin,
+                  uint8_t sclk_pin,
+                  uint8_t mosi_pin,
+                  float vref)
 {    
     if (cs_pin != 0) {
         dev->cs_pin = cs_pin;

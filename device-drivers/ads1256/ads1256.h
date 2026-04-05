@@ -1,7 +1,7 @@
 /**
 @file ads1256.h
-@brief TODO.
-@details TODO.
+@brief Header file for controlling TI's 24-bit ADC, the ADS1256.
+@details This code was based on CuriousScientist0's one (https://github.com/CuriousScientist0/ADS1256/blob/main/src/ADS1256.h and https://www.youtube.com/watch?v=GBWJdyjRIdM&t=262s).
 @author João Cláudio Elsen Barcellos
 @version 0.0.1
 @date 29/03/2026
@@ -11,7 +11,7 @@
 #define ADS1256_H_
 
 #include <stdint.h>
-#include <stdbool.h> 
+#include <stdbool.h>
 
 #define ADS1256_REG_ADDR_STATUS   0x00
 #define ADS1256_REG_ADDR_MUX      0x01
@@ -100,7 +100,7 @@ typedef enum {
 } ads1256_drate_t;
 
 struct ads1256 {
-    // GPIOs and SPI Pins
+    // GPIOs and SPI pins
     uint8_t drdy_pin;
     uint8_t reset_pin;
     uint8_t sync_pin;
@@ -143,7 +143,6 @@ void ads1256_init(ads1256_t *dev,
 void ads1256_initialize(ads1256_t *dev);
 uint8_t ads1256_read_register(ads1256_t *dev, uint8_t reg);
 void ads1256_write_register(ads1256_t *dev, uint8_t reg, uint8_t value);
-
 void ads1256_set_drate(ads1256_t *dev, ads1256_drate_t drate);
 void ads1256_set_pga(ads1256_t *dev, ads1256_pga_t pga);
 void ads1256_set_mux(ads1256_t *dev, ads1256_mux_t mux);
@@ -155,20 +154,14 @@ void ads1256_set_clkout(ads1256_t *dev, uint8_t clkout);
 void ads1256_set_sdcs(ads1256_t *dev, uint8_t sdcs);
 void ads1256_write_gpio(ads1256_t *dev, uint8_t gpio0, uint8_t gpio1, uint8_t gpio2, uint8_t gpio3);
 int8_t ads1256_read_gpio(ads1256_t *dev, uint8_t gpio_pin);
-
 void ads1256_send_command(ads1256_t *dev, uint8_t cmd);
-
 int32_t ads1256_read_single(ads1256_t *dev);
 int32_t ads1256_read_continuous(ads1256_t *dev);
 void ads1256_read_burst(ads1256_t *dev, int32_t *buffer, uint32_t samples);
-
 int32_t ads1256_cycle_single(ads1256_t *dev);
 int32_t ads1256_cycle_differential(ads1256_t *dev);
-
 float ads1256_convert_to_voltage(ads1256_t *dev, int32_t raw);
-
 void ads1256_stop_continuous(ads1256_t *dev);
-
 void ads1256_wait_drdy(ads1256_t *dev);
 void ads1256_end_communication(ads1256_t *dev);
 void ads1256_start_communication(ads1256_t *dev);
