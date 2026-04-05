@@ -91,11 +91,12 @@ struct dac81408 {
     // void *spi_instance;
     
     // Register cache
-    // uint16_t spiconfig_reg; 
-    // uint16_t genconfig_reg; 
-    // uint16_t dacrange_reg; 
-    // uint16_t syncconfig_reg;
-    // uint16_t dacpwdwn_reg; 
+    uint16_t spiconfig_reg; 
+    uint16_t genconfig_reg; 
+    uint16_t dacrange0_reg;
+    uint16_t dacrange1_reg;
+    uint16_t syncconfig_reg;
+    uint16_t dacpwdwn_reg; 
     
     // Internal state
     bool is_initialized;
@@ -123,5 +124,6 @@ int dac81408_get_range(dac81408_t *dev, int ch);
 void dac81408_set_out(dac81408_t *dev, int ch, uint16_t val);
 uint16_t dac81408_get_out(dac81408_t *dev, uint8_t reg);
 void dac81408_set_sync(dac81408_t *dev, int ch, dac81408_sync_t mode);
+void dac81408_trigger_ldac(dac81408_t *dev);
 
 #endif /* DAC81408_H_ */

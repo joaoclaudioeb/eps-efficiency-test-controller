@@ -25,6 +25,10 @@ static inline void _dac81408_tcsh_delay(void) {
     sleep_us(1);  // minimum tCSH from datasheet
 }
 
+static inline void _dac81408_tldac_delay(void) {
+    sleep_us(1);  // minimum tLDAC from datasheet
+}
+
 void dac81408_init(dac81408_t *dev,
                    uint8_t ldac_pin,
                    uint8_t reset_pin,
@@ -60,6 +64,12 @@ void dac81408_init(dac81408_t *dev,
         gpio_set_dir(ldac_pin, GPIO_OUT);
         gpio_put(dev->ldac_pin, 1);
     }
+
+    dev->dacrange0_cache = 0x0000;
+    dev->dacrange1_cache = 0x0000;
+    dev->genconfig_cache = 0x7F00;  // REF-PWDWN=1, RESERVED bits
+    dev->syncconfig_cache = 0x0000;
+    dev->dacpwdwn_cache = 0x0FF0;   // All channels powered down
 }
 
 int dac81408_initialize(dac81408_t *dev)
@@ -74,7 +84,7 @@ int dac81408_initialize(dac81408_t *dev)
     if(dev->reset_pin != 0) {
         gpio_put(dev->reset_pin, 0);
         sleep_ms(1); 
-        gpio_put(dev->reset_pin, 1);; 
+        gpio_put(dev->reset_pin, 1); 
         sleep_ms(1);
     }
 
@@ -133,17 +143,15 @@ uint16_t dac81408_read_register(dac81408_t *dev, uint8_t reg)
     cmd = 0x00;
     spi_write_blocking(DAC81408_SPI_INSTANCE, &cmd, 1);
 
-    _dac81408_tcsh_delay();
-
     gpio_put(dev->cs_pin, 1);
+
+    _dac81408_tcsh_delay();
 
     gpio_put(dev->cs_pin, 0);
     
     spi_read_blocking(DAC81408_SPI_INSTANCE, 0, &buf[0], 1);
     spi_read_blocking(DAC81408_SPI_INSTANCE, 0, &buf[1], 1);
     spi_read_blocking(DAC81408_SPI_INSTANCE, 0, &buf[2], 1);
-
-    _dac81408_tcsh_delay();
 
     gpio_put(dev->cs_pin, 1);
 
@@ -174,62 +182,48 @@ bool dac81408_get_ch_enabled(dac81408_t *dev, int ch)
 
 void dac81408_set_int_reference(dac81408_t *dev, dac81408_ref_t state)
 {
-    uint16_t def = 0x0000;
+    // Preserve bits 2-5 (differential mode enables) and RESERVED bits
+    uint16_t mask_preserve = 0x3C7F;  // Keep bits 2-5, 7, 8-13, 15
+    uint16_t ref_bit = (state == DAC81408_REF_OFF) ? (1 << 14) : 0;
     
-    if (state) {
-        dac81408_write_register(dev, DAC81408_REG_GENCONFIG, def);
-    } else {
-        def = 0x4000;
-        dac81408_write_register(dev, DAC81408_REG_GENCONFIG, def);
-    }
+    dev->genconfig_cache = (dev->genconfig_cache & mask_preserve) | ref_bit;
+    dac81408_write_register(dev, DAC81408_REG_GENCONFIG, dev->genconfig_cache);
 }
 
 int dac81408_get_int_reference(dac81408_t *dev)
 {
-    int out = -1;
-    
     uint16_t res = dac81408_read_register(dev, DAC81408_REG_GENCONFIG);
-
-    if(res == 0x4000) out = 0;
-    else if(res == 0) out = 1;
-
-    return out;
+    return (res & (1 << 14)) ? DAC81408_REF_OFF : DAC81408_REF_ON;
 }
+
 
 void dac81408_set_range(dac81408_t *dev, int ch, dac81408_range_t range) {
     if (ch < 0 || ch > 7) return;
     
-    // Select the correct register based on the channel
-    uint8_t range_reg = (ch < 4) ? DAC81408_REG_DACRANGE0 : DAC81408_REG_DACRANGE1;
-    uint8_t local_ch = (ch < 4) ? ch : ch - 4;  // Index 0-3 within the register
-    
-    // Read-modify-write via SPI (no cache)
-    uint16_t current = dac81408_read_register(dev, range_reg);
+    uint8_t local_ch = ch & 0x3;  // 0-3 index within register
     uint16_t mask = 0xF << (4 * local_ch);
-    uint16_t write = (current & ~mask) | ((range << (4 * local_ch)) & mask);
     
-    dac81408_write_register(dev, range_reg, write);
+    if (ch < 4) {
+        dev->dacrange0_cache = (dev->dacrange0_cache & ~mask) | ((range << (4 * local_ch)) & mask);
+        dac81408_write_register(dev, DAC81408_REG_DACRANGE0, dev->dacrange0_cache);
+    } else {
+        dev->dacrange1_cache = (dev->dacrange1_cache & ~mask) | ((range << (4 * local_ch)) & mask);
+        dac81408_write_register(dev, DAC81408_REG_DACRANGE1, dev->dacrange1_cache);
+    }
 }
 
 int dac81408_get_range(dac81408_t *dev, int ch) {
     if (ch < 0 || ch > 7) return -1;
-    
-    uint8_t range_reg = (ch < 4) ? DAC81408_REG_DACRANGE0 : DAC81408_REG_DACRANGE1;
-    uint8_t local_ch = (ch < 4) ? ch : ch - 4;
-    
-    uint16_t val = dac81408_read_register(dev, range_reg);
-    return (val >> (4 * local_ch)) & 0xF;
+    uint8_t local_ch = ch & 0x3;
+    uint16_t cache = (ch < 4) ? dev->dacrange0_cache : dev->dacrange1_cache;
+    return (cache >> (4 * local_ch)) & 0xF;
 }
 
 void dac81408_set_out(dac81408_t *dev, int ch, uint16_t val)
 {
-    if (ch < 0 || ch > 7) {
-        // Handle the error (e.g., return or throw an exception)
-        return;
-    }
-
-    uint8_t address = 0x14 + ch;
-
+    if (ch < 0 || ch > 7) return;
+    
+    uint8_t address = DAC81408_REG_DAC0 + ch;
     dac81408_write_register(dev, address, val);
 }
 
@@ -242,10 +236,22 @@ uint16_t dac81408_get_out(dac81408_t *dev, uint8_t reg)
 
 void dac81408_set_sync(dac81408_t *dev, int ch, dac81408_sync_t mode)
 {
-    uint16_t read = dac81408_read_register(dev, DAC81408_REG_SYNCCONFIG);
+    if (ch < 0 || ch > 7) return;
+    
+    // SYNC-EN bits are at positions 4-11
+    if (mode == DAC81408_SYNC_LDAC) {
+        dev->syncconfig_cache |= (1UL << (ch + 4));
+    } else {
+        dev->syncconfig_cache &= ~(1UL << (ch + 4));
+    }
+    dac81408_write_register(dev, DAC81408_REG_SYNCCONFIG, dev->syncconfig_cache);
+}
 
-    if(mode==DAC81408_SYNC_LDAC) read |= 1UL << ch;
-    else read &= ~(1UL << ch);
-
-    dac81408_write_register(dev, DAC81408_REG_SYNCCONFIG, read);
+void dac81408_trigger_ldac(dac81408_t *dev)
+{
+    if (dev->ldac_pin == 0) return;
+    
+    gpio_put(dev->ldac_pin, 0);   // Assert LDAC (active low)
+    _dac81408_tldac_delay();                  
+    gpio_put(dev->ldac_pin, 1);   // De-assert
 }
