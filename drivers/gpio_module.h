@@ -7,6 +7,9 @@
 @date 29/03/2026
 */
 
+#ifndef GPIO_MODULE_H_
+#define GPIO_MODULE_H_
+
 #include <stdint.h>
 #include <stdbool.h>
 
@@ -24,17 +27,17 @@ typedef enum {
 } gpio_id_t;
 
 typedef enum {
-    GPIO_FUNC_XIP   = 0,
-    GPIO_FUNC_SPI   = 1,
-    GPIO_FUNC_UART  = 2,
-    GPIO_FUNC_I2C   = 3,
-    GPIO_FUNC_PWM   = 4,
-    GPIO_FUNC_SIO   = 5,
-    GPIO_FUNC_PIO0  = 6,
-    GPIO_FUNC_PIO1  = 7,
-    GPIO_FUNC_GPCK  = 8,
-    GPIO_FUNC_USB   = 9,
-    GPIO_FUNC_NONE  = 0x1F
+    GPIO_FUNCT_XIP   = 0,
+    GPIO_FUNCT_SPI   = 1,
+    GPIO_FUNCT_UART  = 2,
+    GPIO_FUNCT_I2C   = 3,
+    GPIO_FUNCT_PWM   = 4,
+    GPIO_FUNCT_SIO   = 5,
+    GPIO_FUNCT_PIO0  = 6,
+    GPIO_FUNCT_PIO1  = 7,
+    GPIO_FUNCT_GPCK  = 8,
+    GPIO_FUNCT_USB   = 9,
+    GPIO_FUNCT_NONE  = 0x1F
 } gpio_func_t;
 
 typedef enum {

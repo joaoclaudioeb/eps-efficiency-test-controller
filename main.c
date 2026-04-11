@@ -13,16 +13,20 @@
 #include <FreeRTOS.h>    //!< FreeRTOS
 #include <task.h>        //!< FreeRTOS
 
+#include "pico/stdlib.h"
+
 //! Project-specific Headers
 #include "config/tasks.h"
 
 int main(void)
 {
-    //! Create all the prject's tasks
+    stdio_init_all();
+
     create_tasks();
-    //! Start the scheduler
+
     vTaskStartScheduler();
-    //! Should never reach it
+
+    // Should never reache here
     return 0;
 }
 

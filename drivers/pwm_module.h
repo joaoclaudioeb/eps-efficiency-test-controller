@@ -39,6 +39,6 @@ typedef struct {
 void pwm_config_pin(pwm_config_t config);
 void pwm_enable_pin(pwm_config_t config, pwm_state_t state);
 void pwm_set_duty_cycle(pwm_config_t config);
-int pwm_get_slice_for_pin(gpio_id_t pin);
+int pwm_get_slice_for_pin(pwm_id_t pin);
 
 #endif /* PWM_MODULE_H_ */

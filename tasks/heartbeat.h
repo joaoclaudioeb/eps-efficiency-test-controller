@@ -9,8 +9,8 @@
 //! @date 06/08/2024
 //!
 
-#ifndef HEARTBEAT_HPP_
-#define HEARTBEAT_HPP_
+#ifndef HEARTBEAT_H_
+#define HEARTBEAT_H_
 
 //! External Libraries
 #include <FreeRTOS.h>    //!< FreeRTOS
@@ -29,7 +29,7 @@ extern "C" {
 #define TASK_HEARTBEAT_CORE                 (( 1 << 1 ) | ( 1 << 0 )) //!< Can run in both cores
 
 //! Task-related macros
-#define HEARTBEAT           gpio_id::P25
+#define HEARTBEAT           GPIO_P25
 
 //!
 //! @brief Heartbeat task handle.
@@ -47,5 +47,5 @@ void vTaskHeartbeat(void *pvParameters);
 }
 #endif
     
-//! HEARTBEAT_HPP_
+//! HEARTBEAT_H_
 #endif 

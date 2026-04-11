@@ -1,60 +1,71 @@
-//!
-//! @file tasks.cpp
-//!
-//! @brief This file creates all the project's tasks.
-//!
-//! @author João Cláudio Elsen Barcellos <joaoclaudiobarcellos@gmail.com>
-//! @version 0.0.0
-//!
-//! @date 06/08/2024
-//!
+/**
+@file tasks.c
+@brief Source file to create the project's tasks.
+@author João Cláudio Elsen Barcellos
+@version 0.0.1
+@date 08/04/2026
+*/
 
-//! Project-specific Drivers
+/* Project-specific Drivers */
 #include "config.h"
 #include "tasks.h"
 
-//! Project-specific Headers
+/* Project-specific Headers */
 #include "../tasks/test_routine.h"
 #include "../tasks/test_routine_2.h"
+#include "../tasks/dac81408_test_routine.h"
 #include "../tasks/heartbeat.h"
 
 void create_tasks(void) {
 #if EN_TASK_TEST_ROUTINE == 1
     xTaskCreate(vTaskTestRoutine, TASK_TEST_ROUTINE_NAME, TASK_TEST_ROUTINE_STACK_SIZE, NULL, TASK_TEST_ROUTINE_PRIORITY, &xTaskTestRoutineHandle);
     
-    //! Set the core affinity mask for the task */
+    /* Set the core affinity mask for the task */
     vTaskCoreAffinitySet(xTaskTestRoutineHandle, TASK_TEST_ROUTINE_CORE);
 
     if (xTaskTestRoutineHandle == NULL) {
-        //! Error creating the startup task
+        /* Error creating the startup task */
     }
-//! EN_TASK_TEST_ROUTINE    
+/* EN_TASK_TEST_ROUTINE */    
 #endif
 
 
 #if EN_TASK_HEARTBEAT == 1
     xTaskCreate(vTaskHeartbeat, TASK_HEARTBEAT_NAME, TASK_HEARTBEAT_STACK_SIZE, NULL, TASK_HEARTBEAT_PRIORITY, &xTaskHeartbeatHandle);
     
-    //! Set the core affinity mask for the task */
+    /* Set the core affinity mask for the task */
     vTaskCoreAffinitySet(xTaskHeartbeatHandle, TASK_HEARTBEAT_CORE);
 
     if (xTaskHeartbeatHandle == NULL) {
-        //! Error creating the startup task
+        /* Error creating the startup task */
     }
-//! EN_TASK_HEARTBEAT    
+/* EN_TASK_HEARTBEAT */
 #endif
 
     
 #if EN_TASK_TEST_ROUTINE_2 == 1
     xTaskCreate(vTaskTestRoutine2, TASK_TEST_ROUTINE_2_NAME, TASK_TEST_ROUTINE_2_STACK_SIZE, NULL, TASK_TEST_ROUTINE_2_PRIORITY, &xTaskTestRoutine2Handle);
     
-    //! Set the core affinity mask for the task */
+    /* Set the core affinity mask for the task */
     vTaskCoreAffinitySet(xTaskTestRoutine2Handle, TASK_TEST_ROUTINE_2_CORE);
 
     if (xTaskTestRoutine2Handle == NULL) {
-        //! Error creating the startup task
+        /* Error creating the startup task */
     }
-//! EN_TASK_TEST_ROUTINE_2    
+/* EN_TASK_TEST_ROUTINE_2 */
+#endif
+
+    
+#if EN_TASK_DAC81408_TEST_ROUTINE == 1
+    xTaskCreate(vTaskDac81408TestRoutine, TASK_DAC81408_TEST_ROUTINE_NAME, TASK_DAC81408_TEST_ROUTINE_STACK_SIZE, NULL, TASK_DAC81408_TEST_ROUTINE_PRIORITY, &xTaskDac81408TestRoutineHandle);
+    
+    /* Set the core affinity mask for the task */
+    vTaskCoreAffinitySet(xTaskDac81408TestRoutineHandle, TASK_DAC81408_TEST_ROUTINE_CORE);
+
+    if (xTaskDac81408TestRoutineHandle == NULL) {
+        /* Error creating the startup task */
+    }
+/* EN_TASK_DAC81408_TEST_ROUTINE */
 #endif
 }
 

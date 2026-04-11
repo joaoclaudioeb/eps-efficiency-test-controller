@@ -16,7 +16,7 @@ void gpio_init_pin(gpio_id_t pin)
 
 void gpio_set_pin_function(gpio_id_t pin, gpio_func_t function)
 {
-    gpio_set_function((uint)pin, (gpio_function_t)function);
+    gpio_set_function((uint)pin, (gpio_func_t)function);
 }
 
 void gpio_set_pin_direction(gpio_id_t pin, gpio_dir_t dir)

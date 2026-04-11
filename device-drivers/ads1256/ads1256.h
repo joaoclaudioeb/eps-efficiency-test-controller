@@ -12,6 +12,7 @@
 
 #include <stdint.h>
 #include <stdbool.h>
+#include <math.h>
 
 #define ADS1256_REG_ADDR_STATUS   0x00
 #define ADS1256_REG_ADDR_MUX      0x01

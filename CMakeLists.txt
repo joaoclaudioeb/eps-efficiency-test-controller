@@ -34,12 +34,14 @@ add_executable(
   main
   main.c
   ${CMAKE_SOURCE_DIR}/drivers/uart/arch/rsp_pico.cpp
-  ${CMAKE_SOURCE_DIR}/drivers/uart/uart_module.cpp
+  # ${CMAKE_SOURCE_DIR}/drivers/uart/uart_module.cpp
   ${CMAKE_SOURCE_DIR}/device-drivers/ads1256/ads1256.c
+  ${CMAKE_SOURCE_DIR}/device-drivers/dac81408/dac81408.c
   ${CMAKE_SOURCE_DIR}/drivers/gpio_module.c
   ${CMAKE_SOURCE_DIR}/drivers/pwm_module.c
   ${CMAKE_SOURCE_DIR}/tasks/test_routine_2.c
-  ${CMAKE_SOURCE_DIR}/tasks/heartbeat.cpp
+  ${CMAKE_SOURCE_DIR}/tasks/dac81408_test_routine.c
+  ${CMAKE_SOURCE_DIR}/tasks/heartbeat.c
   ${CMAKE_SOURCE_DIR}/config/tasks.c
 )
 

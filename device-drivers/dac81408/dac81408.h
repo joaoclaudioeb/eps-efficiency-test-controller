@@ -38,19 +38,26 @@
 #define DAC81408_REG_OFFSET0        0x21
 #define DAC81408_REG_OFFSET1        0x22
 
-#define DAC81408_RREG               0xC0
-#define DAC81408_WREG               0x00
-
+/* Bits 15-12 are reserved (pg. 35, table 12) */
 #define DAC81408_TEMPALM_EN(x)      ((x) << 11)
 #define DAC81408_DACBUSY_EN(x)      ((x) << 10)
 #define DAC81408_CRCALM_EN(x)       ((x) << 9)
+/* Bits 8-7 are reserved (pg. 35, table 12) */
+#define DAC81408_SOFTTOGGLE_EN(x)   ((x) << 6)
 #define DAC81408_DEV_PWDWN(x)       ((x) << 5)
 #define DAC81408_CRC_EN(x)          ((x) << 4)
+#define DAC81408_STR_EN(x)          ((x) << 3)
 #define DAC81408_SDO_EN(x)          ((x) << 2)
 #define DAC81408_FSDO(x)            ((x) << 1)
+/* Bit 0 is reserved (pg. 35, table 12) */
 
 #define DAC81408_REF_PWDWN(x)       ((x) << 14)
 #define DAC81408_DIFF_EN(x, ch)        ((x) << (ch + 2))
+
+typedef enum {
+    DAC81408_WREG                   = 0,
+    DAC81408_RREG                   = 1
+} dac81408_cmd_t;
 
 typedef enum {
     DAC81408_RANGE_0_5V             = 0x0,      // 0000: 0 to 5 V 
@@ -76,7 +83,12 @@ typedef enum {
 typedef enum {
     DAC81408_REF_OFF                = 0,
     DAC81408_REF_ON                 = 1
-} dac81408_ref_t;
+} dac81408_ref_state_t;
+
+typedef enum {
+    DAC81408_CH_OFF                = 0,
+    DAC81408_CH_ON                 = 1
+} dac81408_ch_state_t;
 
 struct dac81408 {
     // GPIOs and SPI pins
@@ -91,12 +103,12 @@ struct dac81408 {
     // void *spi_instance;
     
     // Register cache
-    uint16_t spiconfig_reg; 
-    uint16_t genconfig_reg; 
-    uint16_t dacrange0_reg;
-    uint16_t dacrange1_reg;
-    uint16_t syncconfig_reg;
-    uint16_t dacpwdwn_reg; 
+    uint16_t spiconfig_cache; 
+    uint16_t genconfig_cache; 
+    uint16_t dacrange0_cache;
+    uint16_t dacrange1_cache;
+    uint16_t syncconfig_cache;
+    uint16_t dacpwdwn_cache; 
     
     // Internal state
     bool is_initialized;
@@ -112,12 +124,12 @@ void dac81408_init(dac81408_t *dev,
                    uint8_t sclk_pin,
                    uint8_t mosi_pin);
 
-int dac81408_initialize(dac81408_t *dev);
+int dac81408_config(dac81408_t *dev);
 void dac81408_write_register(dac81408_t *dev, uint8_t reg, uint16_t wdata);
 uint16_t dac81408_read_register(dac81408_t *dev, uint8_t reg);
 void dac81408_set_ch_enabled(dac81408_t *dev, int ch, bool state);
 bool dac81408_get_ch_enabled(dac81408_t *dev, int ch);
-void dac81408_set_int_reference(dac81408_t *dev, dac81408_ref_t state);
+void dac81408_set_int_reference(dac81408_t *dev, dac81408_ref_state_t state);
 int dac81408_get_int_reference(dac81408_t *dev);
 void dac81408_set_range(dac81408_t *dev, int ch, dac81408_range_t range);
 int dac81408_get_range(dac81408_t *dev, int ch);

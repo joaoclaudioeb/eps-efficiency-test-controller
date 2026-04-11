@@ -14,7 +14,7 @@
 #include "hardware/gpio.h"
 
 #ifndef ADS1256_SPI_INSTANCE
-#define ADS1256_SPI_INSTANCE spi1
+#define ADS1256_SPI_INSTANCE spi0
 #endif
 
 #ifndef ADS1256_SPI_BAUDRATE
